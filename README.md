@@ -50,7 +50,7 @@ While the process is running, every modification to a .soia file in the source
 directory will trigger code generation. 
 The process won't stop until you terminate it.
 
-### Build and run the examples
+### Build and run the C++ code
 
 ```
 # Runs example.cc
