@@ -1,0 +1,74 @@
+cc_library(
+    name = "soiagen",
+    srcs = glob(["soiagen/**/*.cc"]),
+    hdrs = glob(
+        ["soiagen/**/*.h"],
+        exclude = ["soiagen/**/*.testing.h"],
+    ),
+    deps = [
+        "@soia-client//:soia",
+    ],
+)
+
+cc_library(
+    name = "soiagen.testing",
+    testonly = True,
+    hdrs = glob(["soiagen/**/*.testing.h"]),
+    deps = [
+        "@soia-client//:soia.testing",  
+    ],
+)
+
+cc_binary(
+    name = "example",
+    srcs = ["example.cc"],
+    deps = [
+        "@abseil-cpp//absl/status:statusor",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/time",
+        "@abseil-cpp//absl/types:optional",
+        "@soia-client//:soia",
+        ":soiagen",
+    ],
+)
+
+cc_test(
+    name = "example.test",
+    size = "small",
+    srcs = ["example.test.cc"],
+    deps = [
+        ":example",
+        ":soiagen",
+        ":soiagen.testing",
+        "@abseil-cpp//absl/time",
+        "@soia-client//:soia",
+        "@soia-client//:soia.testing",  
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_binary(
+    name = "api_server",
+    srcs = ["api_server.cc"],
+    deps = [
+        ":soiagen",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/status",
+        "@abseil-cpp//absl/status:statusor",
+        "@cpp-httplib//:httplib",
+        "@soia-client//:soia",
+    ],
+)
+
+cc_binary(
+    name = "api_client",
+    srcs = ["api_client.cc"],
+    deps = [
+        ":soiagen",
+        "@abseil-cpp//absl/status:statusor",
+        "@abseil-cpp//absl/types:optional",
+        "@cpp-httplib//:httplib",
+        "@soia-client//:soia",
+    ],
+)

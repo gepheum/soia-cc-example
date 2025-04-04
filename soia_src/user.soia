@@ -1,0 +1,40 @@
+struct User {
+  user_id: int64;
+  name: string;
+  quote: string;
+
+  struct Pet {
+    name: string;
+    height_in_meters: float32;
+    picture: string;
+  }
+  pets: [Pet];
+
+  enum SubscriptionStatus {
+    FREE;
+    trial_start_time: timestamp;
+    PREMIUM;
+  }
+  subscription_status: SubscriptionStatus;
+}
+
+const TARZAN: User = {
+  user_id: 123,
+  name: "Tarzan",
+  quote: "AAAAaAaAaAyAAAAaAaAaAyAAAAaAaAaA",
+  pets: [
+    {
+      name: "Cheeta",
+      height_in_meters: 1.67,
+      picture: "🐒",
+    },
+  ],
+  subscription_status: {
+    kind: "trial_start_time",
+    value: "2025-04-02T11:13:29Z",
+  },
+};
+
+struct UserRegistry {
+  users: [User|user_id];
+}
