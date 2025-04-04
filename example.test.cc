@@ -18,7 +18,7 @@ TEST(ExampleTest, TestStruct) {
       .name = "John Doe",
       .pets =
           {
-              {.name = "Cheeta", .height_in_meters = 1.67, .picture = "🐒"},
+              {.height_in_meters = 1.67, .name = "Cheeta", .picture = "🐒"},
           },
       .quote = "Life is like a box of chocolates.",
       .user_id = 42,
