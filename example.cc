@@ -99,7 +99,7 @@ int main() {
   john.user_id = 42;
   john.name = "John Doe";
 
-  // Or you can use the designated initialized syntax.
+  // Or you can use the designated initialized syntax:
   User jane = {
       // Keep fields in alphabetical order
       .name = "Jane Doe",
