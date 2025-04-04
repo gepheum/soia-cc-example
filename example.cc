@@ -6,6 +6,7 @@
 #include <iostream>
 #include <type_traits>
 
+#include "absl/container/flat_hash_set.h"
 #include "absl/status/statusor.h"
 #include "absl/strings/ascii.h"
 #include "absl/time/time.h"
@@ -249,6 +250,17 @@ int main() {
 
   assert(users.find_or_default(44).name == "Lyla Doe");
   assert(users.find_or_default(45).name == "");
+
+  // EQUALITY AND HASHING
+
+  // Soia structs and enums are equality comparable and hashable.
+  absl::flat_hash_set<User> user_set;
+  user_set.insert(john);
+  user_set.insert(jane);
+  user_set.insert(jane);
+  user_set.insert(lyla);
+
+  assert(user_set.size() == 3);
 
   // CONSTANTS
 
