@@ -15,22 +15,22 @@ TEST(ExampleTest, TestStruct) {
   using ::testing::soiagen::StructIs;
 
   const User john = {
-      .user_id = 42,
       .name = "John Doe",
-      .quote = "Life is like a box of chocolates.",
       .pets =
           {
               {.name = "Cheeta", .height_in_meters = 1.67, .picture = "🐒"},
           },
+      .quote = "Life is like a box of chocolates.",
+      .user_id = 42,
   };
 
   EXPECT_THAT(john, (StructIs<User>{
                         // Only the specified fields are tested
-                        .user_id = 42,
-                        .quote = testing::StartsWith("Life is"),
                         .pets = testing::ElementsAre(StructIs<User::Pet>{
                             .height_in_meters = testing::FloatNear(1.7, 0.1),
                         }),
+                        .quote = testing::StartsWith("Life is"),
+                        .user_id = 42,
                     }));
 }
 
