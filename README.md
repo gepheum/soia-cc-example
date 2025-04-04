@@ -1,6 +1,6 @@
 # Soia C++ examples
 
-## Getting started
+## Build and run the examples
 
 ### Install NodeJS and bazel
 
@@ -68,9 +68,9 @@ bazel run :soia_server
 bazel run :soia_client
 ```
 
-### IDE support
+## IDE support
 
-#### VSCode
+### VSCode
 
 If your C++ compiler is clang (recommended), install the `clangd` extension and disable Microsoft's C/C++ extension.
 
