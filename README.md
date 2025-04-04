@@ -50,7 +50,7 @@ While the process is running, every modification to a .soia file in the source
 directory will trigger code generation. 
 The process won't stop until you terminate it.
 
-### Build and running the examples
+### Build and run the examples
 
 ```
 # Runs example.cc
@@ -67,3 +67,20 @@ bazel run :soia_server
 # Run this command from a different process
 bazel run :soia_client
 ```
+
+### IDE support
+
+#### VSCode
+
+If your C++ compiler is clang (recommended), install the `clangd` extension and disable Microsoft's C/C++ extension.
+
+Every time you change the rules in `BUILD.bazel`, run `bazel run @hedron_compile_commands//:refresh_all`.
+This will regenerate the `compile_commands.json` file, which will give you:
+
+*   code completion
+*   compile errors and warnings
+*   go-to-definition and cross references
+*   hover information and inlay hints
+*   include management
+*   code formatting
+*   simple refactorings
