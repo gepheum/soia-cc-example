@@ -23,9 +23,9 @@ int main() {
       soia::api::MakeHttplibApiClient(&client, "/myapi");
 
   const std::vector<soiagen_user::User> users = {
-      {.user_id = 41, .name = "Jane"},
-      {.user_id = 42, .name = "John"},
-      {.user_id = 43, .name = "Dora"},
+      {.name = "Jane", .user_id = 41},
+      {.name = "John", .user_id = 42},
+      {.name = "Dora", .user_id = 43},
   };
 
   for (const soiagen_user::User& user : users) {
