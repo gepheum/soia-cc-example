@@ -1,5 +1,7 @@
 # Soia C++ examples
 
+Examples showing how to use soia [C++ code generation](https://github.com/gepheum/soia-cc-gen) in a C++ project.
+
 ## Build and run the examples
 
 ### Install NodeJS and bazel
