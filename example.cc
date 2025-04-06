@@ -86,6 +86,8 @@ CapitalizeStrings(T& record) {
 }
 
 int main() {
+  // REFERRING TO GENERATED SYMBOLS
+
   // Every generated symbol lives in a namespace called `soiagen_${path}`,
   // where ${path} is the path to the .soia file relative from the root of the
   // soia source directory, with the ".soia" extension removed, and slashes
@@ -234,7 +236,7 @@ int main() {
   // KEYED ARAYS
 
   // A soia::keyed_items<T, get_key> is a container that stores items of type T
-  // and allows for fast lookups by key using a hash table
+  // and allows for fast lookups by key using a hash table.
 
   UserRegistry user_registry;
   soia::keyed_items<User, soiagen::get_user_id<>>& users = user_registry.users;
@@ -304,4 +306,6 @@ int main() {
   //   },
   //   .subscription_status: ::soiagen::wrap_trial_start_time(absl::FromUnixMillis(1743592409000 /* 2025-04-02T11:13:29+00:00 */)),
   // }
+
+  return 0;
 }
