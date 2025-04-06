@@ -231,7 +231,7 @@ int main() {
   absl::StatusOr<User> maybe_john = soia::Parse<User>(soia::ToDenseJson(john));
   assert(maybe_john.ok() && *maybe_john == john);
 
-  // KEYED ITEMS
+  // KEYED ARAYS
 
   // A soia::keyed_items<T, get_key> is a container that stores items of type T
   // and allows for fast lookups by key using a hash table
