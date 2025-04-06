@@ -19,17 +19,28 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "string_capitalizer",
+    hdrs = ["string_capitalizer.h"],
+    deps = [
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/types:optional",
+        "@soia-client//:soia",
+    ],
+)
+
 cc_binary(
     name = "example",
     srcs = ["example.cc"],
     deps = [
+        ":soiagen",
+        ":string_capitalizer",
         "@abseil-cpp//absl/container:flat_hash_set",
         "@abseil-cpp//absl/status:statusor",
         "@abseil-cpp//absl/strings",
         "@abseil-cpp//absl/time",
         "@abseil-cpp//absl/types:optional",
         "@soia-client//:soia",
-        ":soiagen",
     ],
 )
 
