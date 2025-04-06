@@ -276,7 +276,7 @@ int main() {
   // the structs and enums referenced from the type.
   const TypeDescriptor& user_descriptor = GetTypeDescriptor<User>();
 
-  // TypeDescriptor can  be serialized/deserialized to/from JSON.
+  // TypeDescriptor can be serialized/deserialized to/from JSON.
 
   absl::StatusOr<TypeDescriptor> reserialized_type_descriptor =
       TypeDescriptor::FromJson(user_descriptor.AsJson());
