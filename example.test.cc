@@ -1,7 +1,7 @@
 // Unit tests examples
 //
 // Run with:
-//   bazel run :example.test
+//   bazel test :example.test
 
 #include <gtest/gtest.h>
 
