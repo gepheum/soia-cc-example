@@ -60,7 +60,7 @@ The process won't stop until you terminate it.
 bazel run :example
 
 # Unit tests for soia-generated data types
-bazel test :example.text
+bazel test :example.test
 
 # Start an HTTP server with a soia API
 bazel run :soia_server
