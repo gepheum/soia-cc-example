@@ -150,7 +150,7 @@ int main() {
   // generated class.
   User::SubscriptionStatus lara_status = User::SubscriptionStatus::kFree;
 
-  // WORKING WITH ENUMS
+  // CONDITIONS ON ENUMS
 
   if (john_status == soiagen::kFree) {
     std::cout << "John, would you like to upgrade to premium?\n";
