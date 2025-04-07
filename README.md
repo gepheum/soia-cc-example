@@ -62,12 +62,12 @@ bazel run :example
 # Unit tests for soia-generated data types
 bazel test :example.test
 
-# Start an HTTP server with a soia API
-bazel run :soia_server
+# Starts a soia service
+bazel run :service_start
 
-# Call the soia API started with ^
+# Sends RPCs to the soia service started with ^
 # Run this command from a different process
-bazel run :soia_client
+bazel run :service_client
 ```
 
 ## IDE support
