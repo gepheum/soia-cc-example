@@ -5,7 +5,7 @@ git_override(
     module_name = "soia-client",
     remote = "https://github.com/gepheum/soia-cc-gen",
     # Choose the most recent commit
-    commit = "94934ce917a3180aaad8b7a48a5d8c181e3f1736",
+    commit = "0b9b48733cd68be51b8a9bf1d6b6508d5f7ee2cd",
     strip_prefix = "client/",
 )
 
