@@ -8,7 +8,7 @@ Example showing how to use soia's [C++ code generator](https://github.com/gepheu
 
 If you use homebrew:
 
-```
+```shell
 brew install node
 brew install bazel
 ```
@@ -19,7 +19,7 @@ This example uses Bazel as a layer on top of your compiler for building and runn
 
 ### Download this repository
 
-```
+```shell
 git clone https://github.com/gepheum/soia-cc-example.git
 cd soia-cc-example
 ```
@@ -54,7 +54,7 @@ The process won't stop until you terminate it.
 
 ### Build and run the C++ code
 
-```
+```shell
 # Runs example.cc
 # Contains code snippets showing how to use the soia-generated data types
 bazel run :example
