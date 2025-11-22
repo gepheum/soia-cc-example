@@ -5,7 +5,7 @@ git_override(
     module_name = "soia-client",
     remote = "https://github.com/gepheum/soia-cc-gen",
     # Choose the most recent commit
-    commit = "63b0cb58c9f300992cafe305878c3ddf3b00f6bf",
+    commit = "127f43802a1f2b48fd6b019a48c0fad06a823452",
     strip_prefix = "client/",
 )
 
@@ -31,3 +31,10 @@ git_override(
     remote = "https://github.com/mikael-s-persson/bazel-compile-commands-extractor",
     commit = "f5fbd4cee671d8d908f37c83abaf70fba5928fc7"
 )
+# git_override(
+#     module_name = "hedron_compile_commands",
+#     remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+#     commit = "abb61a688167623088f8768cc9264798df6a9d10",
+#     # Replace the commit hash (above) with the latest (https://github.com/hedronvision/bazel-compile-commands-extractor/commits/main).
+#     # Even better, set up Renovate and let it do the work for you (see "Suggestion: Updates" in the README).
+# )

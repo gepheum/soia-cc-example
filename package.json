@@ -4,7 +4,7 @@
     "gen-clang-json": "bazel run @hedron_compile_commands//:refresh_all"
   },
   "devDependencies": {
-    "soia-cc-gen": "^1.1.6",
-    "soiac": "^1.0.23"
+    "soia-cc-gen": "^1.1.15",
+    "soiac": "^1.0.51"
   }
 }

@@ -64,7 +64,7 @@ struct CapitalizeStringsVisitor {
   void operator()(soia::reflection::enum_const_field<Const>) {}
 
   template <typename Option, typename Value>
-  void operator()(soia::reflection::enum_value_field<Option, Value>) {
+  void operator()(soia::reflection::enum_wrapper_field<Option, Value>) {
     auto* value = Option::get_or_null(record);
     if (value != nullptr) {
       CapitalizeStrings(*value);

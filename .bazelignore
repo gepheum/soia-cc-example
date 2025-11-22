@@ -1,0 +1,8 @@
+# Ignore Bazel-generated symlinks to prevent issues with compile commands extraction
+bazel-bin
+bazel-cc-example
+bazel-example
+bazel-examples
+bazel-out
+bazel-testlogs
+external
