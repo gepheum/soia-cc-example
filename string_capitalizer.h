@@ -6,13 +6,12 @@
 #include "absl/types/optional.h"
 #include "skir.h"
 
-
 // CapitalizeStrings recursively capitalizes all the strings found within a
 // skir value.
 
 template <typename T>
-typename std::enable_if_t<!skir::reflection::IsRecord<T>()>
-CapitalizeStrings(T&);
+typename std::enable_if_t<!skir::reflection::IsRecord<T>()> CapitalizeStrings(
+    T&);
 void CapitalizeStrings(std::string& s);
 template <typename T>
 void CapitalizeStrings(std::vector<T>& vector);
@@ -21,15 +20,15 @@ void CapitalizeStrings(skir::keyed_items<T, GetKey>& vector);
 template <typename T>
 void CapitalizeStrings(absl::optional<T>& optional);
 template <typename T>
-typename std::enable_if_t<skir::reflection::IsStruct<T>()>
-CapitalizeStrings(T& record);
+typename std::enable_if_t<skir::reflection::IsStruct<T>()> CapitalizeStrings(
+    T& record);
 template <typename T>
-typename std::enable_if_t<skir::reflection::IsEnum<T>()>
-CapitalizeStrings(T& record);
+typename std::enable_if_t<skir::reflection::IsEnum<T>()> CapitalizeStrings(
+    T& record);
 
 template <typename T>
-typename std::enable_if_t<!skir::reflection::IsRecord<T>()>
-CapitalizeStrings(T&) {}
+typename std::enable_if_t<!skir::reflection::IsRecord<T>()> CapitalizeStrings(
+    T&) {}
 
 inline void CapitalizeStrings(std::string& s) { absl::AsciiStrToUpper(&s); }
 
@@ -76,13 +75,13 @@ struct CapitalizeStringsVisitor {
 };
 
 template <typename T>
-typename std::enable_if_t<skir::reflection::IsStruct<T>()>
-CapitalizeStrings(T& record) {
+typename std::enable_if_t<skir::reflection::IsStruct<T>()> CapitalizeStrings(
+    T& record) {
   skir::reflection::ForEachField<T>(CapitalizeStringsVisitor<T>{record});
 }
 
 template <typename T>
-typename std::enable_if_t<skir::reflection::IsEnum<T>()>
-CapitalizeStrings(T& record) {
+typename std::enable_if_t<skir::reflection::IsEnum<T>()> CapitalizeStrings(
+    T& record) {
   skir::reflection::ForEachVariant<T>(CapitalizeStringsVisitor<T>{record});
 }

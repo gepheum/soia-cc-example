@@ -238,7 +238,9 @@ int main() {
   //       .picture: "🐒",
   //     },
   //   },
-  //   .subscription_status: ::skirout::wrap_trial_start_time(absl::FromUnixMillis(1743592409000 /* 2025-04-02T11:13:29+00:00 */)),
+  //   .subscription_status:
+  //   ::skirout::wrap_trial_start_time(absl::FromUnixMillis(1743592409000 /*
+  //   2025-04-02T11:13:29+00:00 */)),
   // }
 
   return 0;
