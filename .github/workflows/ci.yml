@@ -10,11 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Run clang-format style check for C/C++/Protobuf programs.
         uses: jidicula/clang-format-action@v4.15.0
         with:
           clang-format-version: 20
-      - uses: actions/checkout@v4
       - uses: bazel-contrib/setup-bazel@0.14.0
         with:
           # Avoid downloading Bazel every time.
