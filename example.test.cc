@@ -7,12 +7,12 @@
 
 #include "absl/time/time.h"
 #include "gmock/gmock.h"
-#include "soiagen/user.h"
-#include "soiagen/user.testing.h"
+#include "skirout/user.h"
+#include "skirout/user.testing.h"
 
 TEST(ExampleTest, TestStruct) {
-  using ::soiagen_user::User;
-  using ::testing::soiagen::StructIs;
+  using ::skirout_user::User;
+  using ::testing::skirout::StructIs;
 
   const User john = {
       .name = "John Doe",
@@ -35,15 +35,15 @@ TEST(ExampleTest, TestStruct) {
 }
 
 TEST(ExampleTest, TestEnum) {
-  using ::soiagen_user::User;
-  using ::testing::soiagen::IsTrialStartTime;
+  using ::skirout_user::User;
+  using ::testing::skirout::IsTrialStartTime;
 
-  User::SubscriptionStatus john_status = soiagen::kFree;
+  User::SubscriptionStatus john_status = skirout::kFree;
 
-  EXPECT_THAT(john_status, testing::Eq(soiagen::kFree));
+  EXPECT_THAT(john_status, testing::Eq(skirout::kFree));
 
   User::SubscriptionStatus jade_status =
-      soiagen::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
+      skirout::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
 
   EXPECT_THAT(jade_status, IsTrialStartTime());
   EXPECT_THAT(jade_status, IsTrialStartTime(testing::Gt(absl::UnixEpoch())));

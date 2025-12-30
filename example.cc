@@ -1,4 +1,4 @@
-// Code snippets showing how to use soia-generated data classes.
+// Code snippets showing how to use skir-generated data classes.
 //
 // Run with:
 //   bazel run :example
@@ -8,19 +8,19 @@
 #include "absl/container/flat_hash_set.h"
 #include "absl/status/statusor.h"
 #include "absl/time/time.h"
-#include "soia.h"
-#include "soiagen/user.h"
+#include "skir.h"
+#include "skirout/user.h"
 #include "string_capitalizer.h"
 
 int main() {
   // REFERRING TO GENERATED SYMBOLS
 
-  // Every generated symbol lives in a namespace called `soiagen_${path}`,
-  // where ${path} is the path to the .soia file relative from the root of the
-  // soia source directory, with the ".soia" extension removed, and slashes
+  // Every generated symbol lives in a namespace called `skirout_${path}`,
+  // where ${path} is the path to the .skir file relative from the root of the
+  // skir source directory, with the ".skir" extension removed, and slashes
   // replaced with underscores.
-  using ::soiagen_user::User;
-  using ::soiagen_user::UserRegistry;
+  using ::skirout_user::User;
+  using ::skirout_user::UserRegistry;
 
   // CONSTRUCTING STRUCTS
 
@@ -41,7 +41,7 @@ int main() {
                    .name = "Rex",
                    .picture = "dog",
                }},
-      .subscription_status = soiagen::kPremium,
+      .subscription_status = skirout::kPremium,
       .user_id = 43,
   };
 
@@ -58,22 +58,22 @@ int main() {
               },
           },
       .quote = "This is Lyla's world, you just live in it",
-      .subscription_status = soiagen::kFree,
+      .subscription_status = skirout::kFree,
       .user_id = 44,
   };
 
   // CONSTRUCTING ENUMS
 
-  // Use soiagen::${kFieldName} for constant variants.
-  User::SubscriptionStatus john_status = soiagen::kFree;
-  User::SubscriptionStatus jane_status = soiagen::kPremium;
+  // Use skirout::${kFieldName} for constant variants.
+  User::SubscriptionStatus john_status = skirout::kFree;
+  User::SubscriptionStatus jane_status = skirout::kPremium;
 
   // Compilation error: MONDAY is not a field of the SubscriptionStatus enum.
-  // User::SubscriptionStatus sara_status = soiagen::kMonday;
+  // User::SubscriptionStatus sara_status = skirout::kMonday;
 
-  // Use soiagen::wrap_${field_name} for data variants.
+  // Use skirout::wrap_${field_name} for data variants.
   User::SubscriptionStatus jade_status =
-      soiagen::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
+      skirout::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
 
   // The ${kFieldName} and wrap_${field_name} symbols are also defined in the
   // generated class.
@@ -81,7 +81,7 @@ int main() {
 
   // CONDITIONS ON ENUMS
 
-  if (john_status == soiagen::kFree) {
+  if (john_status == skirout::kFree) {
     std::cout << "John, would you like to upgrade to premium?\n";
   }
 
@@ -112,13 +112,13 @@ int main() {
 
   // Another way to do an exhaustive switch using the visitor pattern.
   struct Visitor {
-    void operator()(soiagen::k_unknown) const {
+    void operator()(skirout::k_unknown) const {
       std::cout << "Lara's subscription status is UNKNOWN\n";
     }
-    void operator()(soiagen::k_free) const {
+    void operator()(skirout::k_free) const {
       std::cout << "Lara's subscription status is FREE\n";
     }
-    void operator()(soiagen::k_premium) const {
+    void operator()(skirout::k_premium) const {
       std::cout << "Lara's subscription status is PREMIUM\n";
     }
     void operator()(
@@ -131,18 +131,18 @@ int main() {
 
   // SERIALIZATION
 
-  // Serialize a soia value to JSON with ToDenseJson or ToReadableJson.
-  std::cout << soia::ToDenseJson(john) << "\n";
+  // Serialize a skir value to JSON with ToDenseJson or ToReadableJson.
+  std::cout << skir::ToDenseJson(john) << "\n";
   // [42,"John Doe"]
 
-  std::cout << soia::ToReadableJson(john) << "\n";
+  std::cout << skir::ToReadableJson(john) << "\n";
   // {
   //   "user_id": 42,
   //   "name": "John Doe"
   // }
 
   // The dense flavor is the flavor you should pick if you intend to
-  // deserialize the value in the future. Soia allows fields to be renamed, and
+  // deserialize the value in the future. Skir allows fields to be renamed, and
   // because fields names are not part of the dense JSON, renaming a field does
   // not prevent you from deserializing the value.
   // You should pick the readable flavor mostly for debugging purposes.
@@ -151,22 +151,22 @@ int main() {
   // JSON, and serialization/deserialization can be a bit faster.
   // Only use it when this small performance gain is likely to matter, which
   // should be rare.
-  std::cout << soia::ToBytes(john).as_string() << "\n";
-  // soia�+Jane Doe����Fluffy�cat��Rex�dog
+  std::cout << skir::ToBytes(john).as_string() << "\n";
+  // skir�+Jane Doe����Fluffy�cat��Rex�dog
 
   // DESERIALIZATION
 
-  // Use Parse to deserialize a soia value from JSON or binary format.
-  absl::StatusOr<User> maybe_john = soia::Parse<User>(soia::ToDenseJson(john));
+  // Use Parse to deserialize a skir value from JSON or binary format.
+  absl::StatusOr<User> maybe_john = skir::Parse<User>(skir::ToDenseJson(john));
   assert(maybe_john.ok() && *maybe_john == john);
 
   // KEYED ARAYS
 
-  // A soia::keyed_items<T, get_key> is a container that stores items of type T
+  // A skir::keyed_items<T, get_key> is a container that stores items of type T
   // and allows for fast lookups by key using a hash table.
 
   UserRegistry user_registry;
-  soia::keyed_items<User, soiagen::get_user_id<>>& users = user_registry.users;
+  skir::keyed_items<User, skirout::get_user_id<>>& users = user_registry.users;
   users.push_back(john);
   users.push_back(jane);
   users.push_back(lyla);
@@ -180,9 +180,16 @@ int main() {
   assert(users.find_or_default(44).name == "Lyla Doe");
   assert(users.find_or_default(45).name == "");
 
+  // If multiple items have the same key, find_or_null and find_or_default
+  // return the last one. Duplicates are allowed but generally discouraged.
+  User evil_lyla = lyla;
+  evil_lyla.name = "Evil Lyla";
+  users.push_back(evil_lyla);
+  assert(users.find_or_default(44).name == "Evil Lyla");
+
   // EQUALITY AND HASHING
 
-  // Soia structs and enums are equality comparable and hashable.
+  // Skir structs and enums are equality comparable and hashable.
   absl::flat_hash_set<User> user_set;
   user_set.insert(john);
   user_set.insert(jane);
@@ -193,15 +200,15 @@ int main() {
 
   // CONSTANTS
 
-  const User& tarzan = soiagen_user::k_tarzan();
+  const User& tarzan = skirout_user::k_tarzan();
   assert(tarzan.name == "Tarzan");
 
   // DYNAMIC REFLECTION
 
-  using ::soia::reflection::GetTypeDescriptor;
-  using ::soia::reflection::TypeDescriptor;
+  using ::skir::reflection::GetTypeDescriptor;
+  using ::skir::reflection::TypeDescriptor;
 
-  // A TypeDescriptor describes a soia type. It contains the definition of all
+  // A TypeDescriptor describes a skir type. It contains the definition of all
   // the structs and enums referenced from the type.
   const TypeDescriptor& user_descriptor = GetTypeDescriptor<User>();
 
@@ -214,9 +221,9 @@ int main() {
   // STATIC REFLECTION
 
   // Static reflection allows you to inspect and modify values of generated
-  // soia types in a typesafe maneer.
+  // skir types in a typesafe manner.
 
-  User tarzan_copy = soiagen_user::k_tarzan();
+  User tarzan_copy = skirout_user::k_tarzan();
   CapitalizeStrings(tarzan_copy);
 
   std::cout << tarzan_copy << "\n";
@@ -231,7 +238,7 @@ int main() {
   //       .picture: "🐒",
   //     },
   //   },
-  //   .subscription_status: ::soiagen::wrap_trial_start_time(absl::FromUnixMillis(1743592409000 /* 2025-04-02T11:13:29+00:00 */)),
+  //   .subscription_status: ::skirout::wrap_trial_start_time(absl::FromUnixMillis(1743592409000 /* 2025-04-02T11:13:29+00:00 */)),
   // }
 
   return 0;

@@ -1,6 +1,0 @@
-srcDir: ./soia_src
-
-generators:
-  - mod: soia-cc-gen
-    config:
-      writeGoogleTestHeaders: true

@@ -1,0 +1,7 @@
+srcDir: ./skir-src
+
+generators:
+  - mod: skir-cc-gen
+    outDir: ./skirout
+    config:
+      writeGoogleTestHeaders: true

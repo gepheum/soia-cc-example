@@ -1,4 +1,4 @@
-name: Soia C++ Examples CI
+name: Skir C++ Examples CI
 
 on:
   push:
@@ -15,10 +15,6 @@ jobs:
         with:
           clang-format-version: 20
       - uses: actions/checkout@v4
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
       - uses: bazel-contrib/setup-bazel@0.14.0
         with:
           # Avoid downloading Bazel every time.
@@ -27,8 +23,7 @@ jobs:
           disk-cache: ${{ github.workflow }}
           # Share repository cache between workflows.
           repository-cache: true
-      - run: npm ci
-      - run: npm run soiac
+      - run: npx skir gen
       - name: Build C++
         run: bazel build :all
       - name: Run unit tests

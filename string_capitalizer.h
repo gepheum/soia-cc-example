@@ -4,28 +4,31 @@
 
 #include "absl/strings/ascii.h"
 #include "absl/types/optional.h"
-#include "soia.h"
+#include "skir.h"
 
 
 // CapitalizeStrings recursively capitalizes all the strings found within a
-// soia value.
+// skir value.
 
 template <typename T>
-typename std::enable_if_t<!soia::reflection::IsRecord<T>()>
+typename std::enable_if_t<!skir::reflection::IsRecord<T>()>
 CapitalizeStrings(T&);
 void CapitalizeStrings(std::string& s);
 template <typename T>
 void CapitalizeStrings(std::vector<T>& vector);
 template <typename T, typename GetKey>
-void CapitalizeStrings(soia::keyed_items<T, GetKey>& vector);
+void CapitalizeStrings(skir::keyed_items<T, GetKey>& vector);
 template <typename T>
 void CapitalizeStrings(absl::optional<T>& optional);
 template <typename T>
-typename std::enable_if_t<soia::reflection::IsRecord<T>()>
+typename std::enable_if_t<skir::reflection::IsStruct<T>()>
+CapitalizeStrings(T& record);
+template <typename T>
+typename std::enable_if_t<skir::reflection::IsEnum<T>()>
 CapitalizeStrings(T& record);
 
 template <typename T>
-typename std::enable_if_t<!soia::reflection::IsRecord<T>()>
+typename std::enable_if_t<!skir::reflection::IsRecord<T>()>
 CapitalizeStrings(T&) {}
 
 inline void CapitalizeStrings(std::string& s) { absl::AsciiStrToUpper(&s); }
@@ -38,7 +41,7 @@ void CapitalizeStrings(std::vector<T>& vector) {
 }
 
 template <typename T, typename GetKey>
-void CapitalizeStrings(soia::keyed_items<T, GetKey>& vector) {
+void CapitalizeStrings(skir::keyed_items<T, GetKey>& vector) {
   for (T& value : vector) {
     CapitalizeStrings(value);
   }
@@ -56,15 +59,15 @@ struct CapitalizeStringsVisitor {
   T& record;
 
   template <typename Getter, typename Value>
-  void operator()(soia::reflection::struct_field<Getter, Value>) {
+  void operator()(skir::reflection::struct_field<Getter, Value>) {
     CapitalizeStrings(Getter()(record));
   }
 
   template <typename Const>
-  void operator()(soia::reflection::enum_const_field<Const>) {}
+  void operator()(skir::reflection::enum_const_variant<Const>) {}
 
   template <typename Option, typename Value>
-  void operator()(soia::reflection::enum_wrapper_field<Option, Value>) {
+  void operator()(skir::reflection::enum_wrapper_variant<Option, Value>) {
     auto* value = Option::get_or_null(record);
     if (value != nullptr) {
       CapitalizeStrings(*value);
@@ -73,7 +76,13 @@ struct CapitalizeStringsVisitor {
 };
 
 template <typename T>
-typename std::enable_if_t<soia::reflection::IsRecord<T>()>
+typename std::enable_if_t<skir::reflection::IsStruct<T>()>
 CapitalizeStrings(T& record) {
-  soia::reflection::ForEachField<T>(CapitalizeStringsVisitor<T>{record});
+  skir::reflection::ForEachField<T>(CapitalizeStringsVisitor<T>{record});
+}
+
+template <typename T>
+typename std::enable_if_t<skir::reflection::IsEnum<T>()>
+CapitalizeStrings(T& record) {
+  skir::reflection::ForEachVariant<T>(CapitalizeStringsVisitor<T>{record});
 }

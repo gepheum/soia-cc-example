@@ -1,21 +1,21 @@
 cc_library(
-    name = "soiagen",
-    srcs = glob(["soiagen/**/*.cc"]),
+    name = "skirout",
+    srcs = glob(["skirout/**/*.cc"]),
     hdrs = glob(
-        ["soiagen/**/*.h"],
-        exclude = ["soiagen/**/*.testing.h"],
+        ["skirout/**/*.h"],
+        exclude = ["skirout/**/*.testing.h"],
     ),
     deps = [
-        "@soia-client//:soia",
+        "@skir-client//:skir",
     ],
 )
 
 cc_library(
-    name = "soiagen.testing",
+    name = "skirout.testing",
     testonly = True,
-    hdrs = glob(["soiagen/**/*.testing.h"]),
+    hdrs = glob(["skirout/**/*.testing.h"]),
     deps = [
-        "@soia-client//:soia.testing",  
+        "@skir-client//:skir.testing",  
     ],
 )
 
@@ -25,7 +25,7 @@ cc_library(
     deps = [
         "@abseil-cpp//absl/strings",
         "@abseil-cpp//absl/types:optional",
-        "@soia-client//:soia",
+        "@skir-client//:skir",
     ],
 )
 
@@ -33,14 +33,14 @@ cc_binary(
     name = "example",
     srcs = ["example.cc"],
     deps = [
-        ":soiagen",
+        ":skirout",
         ":string_capitalizer",
         "@abseil-cpp//absl/container:flat_hash_set",
         "@abseil-cpp//absl/status:statusor",
         "@abseil-cpp//absl/strings",
         "@abseil-cpp//absl/time",
         "@abseil-cpp//absl/types:optional",
-        "@soia-client//:soia",
+        "@skir-client//:skir",
     ],
 )
 
@@ -50,11 +50,11 @@ cc_test(
     srcs = ["example.test.cc"],
     deps = [
         ":example",
-        ":soiagen",
-        ":soiagen.testing",
+        ":skirout",
+        ":skirout.testing",
         "@abseil-cpp//absl/time",
-        "@soia-client//:soia",
-        "@soia-client//:soia.testing",  
+        "@skir-client//:skir",
+        "@skir-client//:skir.testing",  
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -64,12 +64,12 @@ cc_binary(
     name = "service_start",
     srcs = ["service_start.cc"],
     deps = [
-        ":soiagen",
+        ":skirout",
         "@abseil-cpp//absl/container:flat_hash_map",
         "@abseil-cpp//absl/status",
         "@abseil-cpp//absl/status:statusor",
         "@cpp-httplib//:httplib",
-        "@soia-client//:soia",
+        "@skir-client//:skir",
     ],
 )
 
@@ -77,10 +77,10 @@ cc_binary(
     name = "service_client",
     srcs = ["service_client.cc"],
     deps = [
-        ":soiagen",
+        ":skirout",
         "@abseil-cpp//absl/status:statusor",
         "@abseil-cpp//absl/types:optional",
         "@cpp-httplib//:httplib",
-        "@soia-client//:soia",
+        "@skir-client//:skir",
     ],
 )

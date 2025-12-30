@@ -1,11 +1,11 @@
 """ MODULE.bazel """
 
-bazel_dep(name = "soia-client")
+bazel_dep(name = "skir-client")
 git_override(
-    module_name = "soia-client",
-    remote = "https://github.com/gepheum/soia-cc-gen",
+    module_name = "skir-client",
+    remote = "https://github.com/gepheum/skir-cc-gen",
     # Choose the most recent commit
-    commit = "3c0908a0940994bb9c091493bc23c896d3073723",
+    commit = "f317aa796ed1847a54e579abf1a18dd97763c17d",
     strip_prefix = "client/",
 )
 
