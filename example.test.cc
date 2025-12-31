@@ -37,15 +37,17 @@ TEST(ExampleTest, TestStruct) {
 
 TEST(ExampleTest, TestEnum) {
   using ::skirout_user::SubscriptionStatus;
-  using ::testing::skirout::IsTrialStartTime;
+  using ::testing::skirout::IsTrial;
+  using ::testing::skirout::StructIs;
 
   SubscriptionStatus john_status = skirout::kFree;
 
   EXPECT_THAT(john_status, testing::Eq(skirout::kFree));
 
-  SubscriptionStatus jade_status =
-      skirout::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
+  SubscriptionStatus jade_status = SubscriptionStatus::wrap_trial(
+      {.start_time = absl::FromUnixMillis(1743682787000)});
 
-  EXPECT_THAT(jade_status, IsTrialStartTime());
-  EXPECT_THAT(jade_status, IsTrialStartTime(testing::Gt(absl::UnixEpoch())));
+  EXPECT_THAT(jade_status, IsTrial());
+  EXPECT_THAT(jade_status, IsTrial(StructIs<SubscriptionStatus::Trial>{
+                               .start_time = testing::Gt(absl::UnixEpoch())}));
 }

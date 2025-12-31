@@ -46,7 +46,7 @@ int main() {
       .user_id = 43,
   };
 
-  // ${StructName}::whole forces you to initialize all the fields of the struct.
+  // ${Struct}::whole forces you to initialize all the fields of the struct.
   // You will get a compile-time error if you miss one.
   User lyla = User::whole{
       .name = "Lyla Doe",
@@ -65,20 +65,22 @@ int main() {
 
   // CONSTRUCTING ENUMS
 
-  // Use skirout::${kFieldName} for constant variants.
+  // Use skirout::${kFieldName} or ${Enum}::${kFieldName} for constant variants.
   SubscriptionStatus john_status = skirout::kFree;
   SubscriptionStatus jane_status = skirout::kPremium;
+  SubscriptionStatus lara_status = SubscriptionStatus::kFree;
 
   // Compilation error: MONDAY is not a field of the SubscriptionStatus enum.
   // SubscriptionStatus sara_status = skirout::kMonday;
 
-  // Use skirout::wrap_${field_name} for wrapper variants.
+  // Use wrap_${field_name} for wrapper variants.
   SubscriptionStatus jade_status =
-      skirout::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
-
-  // The ${kFieldName} and wrap_${field_name} symbols are also defined in the
-  // generated class.
-  SubscriptionStatus lara_status = SubscriptionStatus::kFree;
+      skirout::wrap_trial(SubscriptionStatus::Trial({
+          .start_time = absl::FromUnixMillis(1743682787000),
+      }));
+  SubscriptionStatus roni_status = SubscriptionStatus::wrap_trial({
+      .start_time = absl::FromUnixMillis(1743682787000),
+  });
 
   // CONDITIONS ON ENUMS
 
@@ -87,10 +89,10 @@ int main() {
   }
 
   // Call is_${field_name}() to check if the enum holds a wrapper variant.
-  if (jade_status.is_trial_start_time()) {
+  if (jade_status.is_trial()) {
     // as_${field_name}() returns the wrapped value
-    const absl::Time trial_start_time = jade_status.as_trial_start_time();
-    std::cout << "Jade's trial started on " << trial_start_time << "\n";
+    const SubscriptionStatus::Trial& trial = jade_status.as_trial();
+    std::cout << "Jade's trial started on " << trial.start_time << "\n";
   }
 
   // One way to do an exhaustive switch on an enum.
@@ -105,9 +107,9 @@ int main() {
     case SubscriptionStatus::kind_type::kPremiumConst:
       // ...
       break;
-    case SubscriptionStatus::kind_type::kTrialStartTimeWrapper: {
-      const absl::Time& trial_start_time = lara_status.as_trial_start_time();
-      std::cout << "Lara's trial started on " << trial_start_time << "\n";
+    case SubscriptionStatus::kind_type::kTrialWrapper: {
+      const SubscriptionStatus::Trial& trial = lara_status.as_trial();
+      std::cout << "Lara's trial started on " << trial.start_time << "\n";
     }
   }
 
@@ -122,9 +124,9 @@ int main() {
     void operator()(skirout::k_premium) const {
       std::cout << "Lara's subscription status is PREMIUM\n";
     }
-    void operator()(SubscriptionStatus::wrap_trial_start_time_type& w) const {
-      const absl::Time& trial_start_time = w.value;
-      std::cout << "Lara's trial started on " << trial_start_time << "\n";
+    void operator()(SubscriptionStatus::wrap_trial_type& w) const {
+      const SubscriptionStatus::Trial& trial = w.value;
+      std::cout << "Lara's trial started on " << trial.start_time << "\n";
     }
   };
   lara_status.visit(Visitor());

@@ -15,8 +15,12 @@ struct User {
 
 enum SubscriptionStatus {
   FREE;
-  trial_start_time: timestamp;
+  trial: Trial;
   PREMIUM;
+
+  struct Trial {
+    start_time: timestamp;
+  }
 }
 
 /// King of the jungle
@@ -32,8 +36,10 @@ const TARZAN: User = {
     },
   ],
   subscription_status: {
-    kind: "trial_start_time",
-    value: "2025-04-02T11:13:29Z",
+    kind: "trial",
+    value: {
+      start_time: "2025-04-02T11:13:29Z",
+    },
   },
 };
 
