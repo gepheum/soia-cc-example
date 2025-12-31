@@ -24,14 +24,6 @@ FetchContent_Declare(
 set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_ENABLE_INSTALL OFF)
 
-# cpp-httplib
-FetchContent_Declare(
-  httplib
-  GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
-  GIT_TAG        v0.22.0
-)
-set(HTTPLIB_REQUIRE_OPENSSL OFF)
-
 # GoogleTest (if building tests)
 if(BUILD_TESTING)
   FetchContent_Declare(
@@ -50,8 +42,17 @@ FetchContent_Declare(
   SOURCE_SUBDIR  client
 )
 
+# cpp-httplib
+FetchContent_Declare(
+  httplib
+  GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+  GIT_TAG        v0.22.0
+)
+set(HTTPLIB_REQUIRE_OPENSSL OFF)
+
 # Make all content available
 FetchContent_MakeAvailable(absl httplib skir-client)
+
 if(BUILD_TESTING)
   FetchContent_MakeAvailable(googletest)
   enable_testing()
