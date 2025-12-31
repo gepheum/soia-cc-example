@@ -4,16 +4,19 @@ Example showing how to use skir's [C++ code generator](https://github.com/gepheu
 
 ## Build and run the example
 
-### Install bazel and NodeJS
+This project supports two build systems: **CMake** (recommended) and **Bazel**. Choose the one that fits your workflow.
 
-If you use homebrew:
+### Prerequisites
+
+- **Node.js** - for running the Skir code generator
+- **CMake 3.20+** (recommended) or **Bazel** - for building the C++ code
+- A **C++17 compatible compiler** (GCC, Clang, or MSVC)
+
+If you use Homebrew on macOS:
 
 ```shell
-brew install bazel
-brew install node
+brew install cmake node
 ```
-
-This example uses Bazel as a layer on top of your compiler for building and running the C++ code as well as a C++ dependency manager.
 
 ### Download this repository
 
@@ -24,7 +27,11 @@ cd skir-cc-example
 
 ### Run Skir-to-C++ code generation
 
-`npx skir gen`
+Generate the C++ code from Skir definitions:
+
+```shell
+npx skir gen
+```
 
 The Skir compiler looks for a `skir.yml` file in the current directory.
 This file contains the following information:
@@ -39,37 +46,102 @@ While the process is running, every modification to a .skir file in the source
 directory will trigger code generation. 
 The process won't stop until you terminate it.
 
-### Build and run the C++ code
+### Build with CMake (Recommended)
+
+CMake automatically fetches and builds all dependencies (Abseil, cpp-httplib, GoogleTest, and skir-client).
+
+#### Configure and build
 
 ```shell
-# Runs example.cc
-# Contains code snippets showing how to use the skir-generated data types
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
+Or with parallel jobs for faster builds:
+
+```shell
+cmake --build . -j$(nproc)  # Linux/macOS
+cmake --build . -j8          # or specify number of cores
+```
+
+#### Run the executables
+
+```shell
+# Run the example program
+./example
+
+# Run tests
+ctest --output-on-failure
+
+# Start a skir service
+./service_start
+
+# Send RPCs to the skir service (run in a different terminal)
+./service_client
+```
+
+#### Build options
+
+- `BUILD_TESTING` (default: ON) - Build the test suite
+
+To disable tests:
+```shell
+cmake -DBUILD_TESTING=OFF ..
+```
+
+For release builds with optimizations:
+```shell
+cmake -DCMAKE_BUILD_TYPE=Release ..
+```
+
+### Build with Bazel (Alternative)
+
+If you prefer Bazel:
+
+```shell
+brew install bazel
+```
+
+```shell
+# Run example.cc - contains code snippets showing how to use skir-generated data types
 bazel run :example
 
 # Unit tests for skir-generated data types
 bazel test :example.test
 
-# Starts a skir service
+# Start a skir service
 bazel run :service_start
 
-# Sends RPCs to the skir service started with ^
-# Run this command from a different process
+# Send RPCs to the skir service (run in a different terminal)
 bazel run :service_client
 ```
 
 ## IDE support
 
-### VSCode
+### VSCode with CMake
+
+CMake generates a `compile_commands.json` file automatically, which provides excellent IDE integration.
 
 If your C++ compiler is clang (recommended), install the `clangd` extension and disable Microsoft's C/C++ extension.
 
-Every time you change the rules in `BUILD.bazel`, run `bazel run @hedron_compile_commands//:refresh_all`.
-This will regenerate the `compile_commands.json` file, which will give you:
+The `compile_commands.json` file provides:
 
-*   code completion
-*   compile errors and warnings
-*   go-to-definition and cross references
-*   hover information and inlay hints
-*   include management
-*   code formatting
-*   simple refactorings
+*   Code completion
+*   Compile errors and warnings
+*   Go-to-definition and cross references
+*   Hover information and inlay hints
+*   Include management
+*   Code formatting
+*   Simple refactorings
+
+### VSCode with Bazel
+
+If using Bazel, every time you change the rules in `BUILD.bazel`, run:
+
+```shell
+bazel run @hedron_compile_commands//:refresh_all
+```
+
+This will regenerate the `compile_commands.json` file with the same IDE benefits as above.

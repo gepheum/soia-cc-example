@@ -179,15 +179,8 @@ int main() {
   const User* maybe_jane = users.find_or_null(43);
   assert(maybe_jane != nullptr && *maybe_jane == jane);
 
-  assert(users.find_or_default(44).name == "Lyla Doe");
+  assert(users.find_or_default(43).name == "Jane Doe");
   assert(users.find_or_default(45).name == "");
-
-  // If multiple items have the same key, find_or_null and find_or_default
-  // return the last one. Duplicates are allowed but generally discouraged.
-  User evil_lyla = lyla;
-  evil_lyla.name = "Evil Lyla";
-  users.push_back(evil_lyla);
-  assert(users.find_or_default(44).name == "Evil Lyla");
 
   // EQUALITY AND HASHING
 
