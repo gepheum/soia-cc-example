@@ -19,6 +19,7 @@ int main() {
   // where ${path} is the path to the .skir file relative from the root of the
   // skir source directory, with the ".skir" extension removed, and slashes
   // replaced with underscores.
+  using ::skirout_user::SubscriptionStatus;
   using ::skirout_user::User;
   using ::skirout_user::UserRegistry;
 
@@ -65,19 +66,19 @@ int main() {
   // CONSTRUCTING ENUMS
 
   // Use skirout::${kFieldName} for constant variants.
-  User::SubscriptionStatus john_status = skirout::kFree;
-  User::SubscriptionStatus jane_status = skirout::kPremium;
+  SubscriptionStatus john_status = skirout::kFree;
+  SubscriptionStatus jane_status = skirout::kPremium;
 
   // Compilation error: MONDAY is not a field of the SubscriptionStatus enum.
-  // User::SubscriptionStatus sara_status = skirout::kMonday;
+  // SubscriptionStatus sara_status = skirout::kMonday;
 
-  // Use skirout::wrap_${field_name} for data variants.
-  User::SubscriptionStatus jade_status =
+  // Use skirout::wrap_${field_name} for wrapper variants.
+  SubscriptionStatus jade_status =
       skirout::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
 
   // The ${kFieldName} and wrap_${field_name} symbols are also defined in the
   // generated class.
-  User::SubscriptionStatus lara_status = User::SubscriptionStatus::kFree;
+  SubscriptionStatus lara_status = SubscriptionStatus::kFree;
 
   // CONDITIONS ON ENUMS
 
@@ -85,26 +86,26 @@ int main() {
     std::cout << "John, would you like to upgrade to premium?\n";
   }
 
-  // Call is_${field_name}() to check if the enum holds a data variant.
+  // Call is_${field_name}() to check if the enum holds a wrapper variant.
   if (jade_status.is_trial_start_time()) {
-    // as_${field_name}() returns the value held by the enum
+    // as_${field_name}() returns the wrapped value
     const absl::Time trial_start_time = jade_status.as_trial_start_time();
     std::cout << "Jade's trial started on " << trial_start_time << "\n";
   }
 
   // One way to do an exhaustive switch on an enum.
   switch (lara_status.kind()) {
-    case User::SubscriptionStatus::kind_type::kUnknown:
+    case SubscriptionStatus::kind_type::kUnknown:
       // UNKNOWN is the default value for an uninitialized SubscriptionStatus.
       // ...
       break;
-    case User::SubscriptionStatus::kind_type::kFreeConst:
+    case SubscriptionStatus::kind_type::kFreeConst:
       // ...
       break;
-    case User::SubscriptionStatus::kind_type::kPremiumConst:
+    case SubscriptionStatus::kind_type::kPremiumConst:
       // ...
       break;
-    case User::SubscriptionStatus::kind_type::kTrialStartTimeWrapper: {
+    case SubscriptionStatus::kind_type::kTrialStartTimeWrapper: {
       const absl::Time& trial_start_time = lara_status.as_trial_start_time();
       std::cout << "Lara's trial started on " << trial_start_time << "\n";
     }
@@ -121,8 +122,7 @@ int main() {
     void operator()(skirout::k_premium) const {
       std::cout << "Lara's subscription status is PREMIUM\n";
     }
-    void operator()(
-        User::SubscriptionStatus::wrap_trial_start_time_type& w) const {
+    void operator()(SubscriptionStatus::wrap_trial_start_time_type& w) const {
       const absl::Time& trial_start_time = w.value;
       std::cout << "Lara's trial started on " << trial_start_time << "\n";
     }

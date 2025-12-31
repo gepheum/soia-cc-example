@@ -10,13 +10,13 @@ struct User {
     picture: string;
   }
   pets: [Pet];
-
-  enum SubscriptionStatus {
-    FREE;
-    trial_start_time: timestamp;
-    PREMIUM;
-  }
   subscription_status: SubscriptionStatus;
+}
+
+enum SubscriptionStatus {
+  FREE;
+  trial_start_time: timestamp;
+  PREMIUM;
 }
 
 /// King of the jungle

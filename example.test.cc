@@ -11,6 +11,7 @@
 #include "skirout/user.testing.h"
 
 TEST(ExampleTest, TestStruct) {
+  using ::skirout_user::SubscriptionStatus;
   using ::skirout_user::User;
   using ::testing::skirout::StructIs;
 
@@ -35,14 +36,14 @@ TEST(ExampleTest, TestStruct) {
 }
 
 TEST(ExampleTest, TestEnum) {
-  using ::skirout_user::User;
+  using ::skirout_user::SubscriptionStatus;
   using ::testing::skirout::IsTrialStartTime;
 
-  User::SubscriptionStatus john_status = skirout::kFree;
+  SubscriptionStatus john_status = skirout::kFree;
 
   EXPECT_THAT(john_status, testing::Eq(skirout::kFree));
 
-  User::SubscriptionStatus jade_status =
+  SubscriptionStatus jade_status =
       skirout::wrap_trial_start_time(absl::FromUnixMillis(1743682787000));
 
   EXPECT_THAT(jade_status, IsTrialStartTime());
